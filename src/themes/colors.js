@@ -1,0 +1,17 @@
+export const colors = {
+  light: 'light',
+  backgroundColor: '#FFFFFF',
+  textColor: '#212121',
+  textRevertColor: '#FFFFFF',
+  btnColor3: '#EEEEEE',
+  inputBg: '#FAFAFA',
+  dark3: '#E7E7E7',
+  iconColor: '#9E9E9E',
+  bColor: '#EEEEEE',
+  btnColor: '#101010',
+  imageBg: '#F3F3F3',
+  primary4: '#404040',
+  inactive: '#9E9E9E',
+  alertColor: '#F75555',
+  placeHolderColor: '#9E9E9E',
+};
