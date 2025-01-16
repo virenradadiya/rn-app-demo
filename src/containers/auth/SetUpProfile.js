@@ -1,6 +1,6 @@
 // Libraries import
 import {StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 // Local import
 import CSafeAreaView from '../../components/common/CSafeAreaView';
@@ -12,6 +12,11 @@ import CInput from '../../components/common/CInput';
 import KeyBoardAvoidWrapper from '../../components/common/KeyBoardAvoidWrapper';
 import {StackNav} from '../../navigation/NavigationKeys';
 import CButton from '../../components/common/CButton';
+import {
+  validateEmail,
+  validateName,
+  validatePhoneNum,
+} from '../../utils/validators';
 
 const SetUpProfile = props => {
   const {navigation} = props;
@@ -32,6 +37,19 @@ const SetUpProfile = props => {
   const [fullNameInputStyle, setFullNameInputStyle] = useState(BlurredStyle);
   const [phoneNoInputStyle, setPhoneNoInputStyle] = useState(BlurredStyle);
   const [nicknameInputStyle, setNicknameInputStyle] = useState(BlurredStyle);
+  const [isDisable, setIsDisable] = useState(true);
+  const [errorEmail, setErrorEmail] = useState('');
+  const [errorFullName, setErrorFullName] = useState('');
+  const [errorPhoneNo, setErrorPhoneNo] = useState('');
+  const [errorNickname, setErrorNickname] = useState('');
+
+  useEffect(() => {
+    if (!fullName || !nickname || !phoneNo || !email) {
+      setIsDisable(true);
+    } else {
+      setIsDisable(false);
+    }
+  }, [fullName, nickname, phoneNo, email]);
 
   const onFocusInput = onHighlight => onHighlight(FocusedStyle);
   const onBlurInput = onUnHighlight => onUnHighlight(BlurredStyle);
@@ -55,10 +73,28 @@ const SetUpProfile = props => {
     onBlurInput(setPhoneNoInputStyle);
   };
 
-  const onChangedFullName = text => setFullName(text);
-  const onChangedNickName = text => setNickname(text);
-  const onChangedPhoneNo = text => setPhoneNo(text);
-  const onChangedEmail = text => setEmail(text);
+  const onChangedFullName = text => {
+    const {msg} = validateName(text);
+    setFullName(text);
+    setErrorFullName(msg);
+  };
+
+  const onChangedNickName = text => {
+    const {msg} = validateName(text);
+    setNickname(text);
+    setErrorNickname(msg);
+  };
+
+  const onChangedPhoneNo = text => {
+    const {msg} = validatePhoneNum(text);
+    setPhoneNo(text);
+    setErrorPhoneNo(msg);
+  };
+  const onChangedEmail = text => {
+    const {msg} = validateEmail(text);
+    setEmail(text);
+    setErrorEmail(msg);
+  };
 
   const onPressContinue = () => {
     navigation.navigate(StackNav.Home);
@@ -79,7 +115,8 @@ const SetUpProfile = props => {
             fullNameInputStyle,
           ]}
           _onFocus={onFocusFullName}
-          onBlur={onBlurFullName}
+          _onBlur={onBlurFullName}
+          _errorText={errorFullName}
         />
         <CInput
           placeHolder={strings.nickname}
@@ -92,7 +129,8 @@ const SetUpProfile = props => {
             nicknameInputStyle,
           ]}
           _onFocus={onFocusNickName}
-          onBlur={onBlurNickName}
+          _onBlur={onBlurNickName}
+          _errorText={errorNickname}
         />
         <CInput
           placeHolder={strings.email}
@@ -106,7 +144,8 @@ const SetUpProfile = props => {
             emailInputStyle,
           ]}
           _onFocus={onFocusEmail}
-          onBlur={onBlurEmail}
+          _onBlur={onBlurEmail}
+          _errorText={errorEmail}
         />
         <CInput
           placeHolder={strings.phoneNumber}
@@ -120,7 +159,8 @@ const SetUpProfile = props => {
             phoneNoInputStyle,
           ]}
           _onFocus={onFocusPhoneNo}
-          onBlur={onBlurPhoneNo}
+          _onBlur={onBlurPhoneNo}
+          _errorText={errorPhoneNo}
         />
       </KeyBoardAvoidWrapper>
 
@@ -128,6 +168,7 @@ const SetUpProfile = props => {
         type={'S16'}
         title={strings.continue}
         onPress={onPressContinue}
+        disabled={!!isDisable}
         containerStyle={localStyles.continueBtnStyle}
       />
     </CSafeAreaView>

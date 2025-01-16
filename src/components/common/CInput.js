@@ -77,6 +77,7 @@ export default CInput = props => {
           keyboardType={keyBoardType}
           multiline={multiline}
           editable={_editable}
+          contextMenuHidden={true}
           onFocus={_onFocus}
           onBlur={_onBlur}
           placeholder={placeHolder}

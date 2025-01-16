@@ -2,6 +2,8 @@
 import {StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import {ActivityIndicator} from 'react-native';
+import JailMonkey from 'jail-monkey';
+import RNExitApp from 'react-native-exit-app';
 
 // Local Imports
 import {styles} from '../../themes';
@@ -10,8 +12,13 @@ import CSafeAreaView from '../../components/common/CSafeAreaView';
 
 const Splash = ({navigation}) => {
   const asyncProcess = async () => {
+    let isJailBroken = JailMonkey.isJailBroken();
     try {
-      navigation.replace(StackNav.SetUpProfile);
+      if (!!isJailBroken) {
+        RNExitApp.exitApp();
+      } else {
+        navigation.replace(StackNav.SetUpProfile);
+      }
     } catch (e) {
       console.log('error ', e);
     }

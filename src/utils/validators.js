@@ -7,6 +7,8 @@ const passwordRegex = /^(?=.*\d)(?=.*\W)(?=.*[a-z])(?=.*[A-Z]).{1,}$/;
 
 const nameRegex = /^([\w]{1,})+([\w\s]{0,})+$/i;
 
+const phoneNumRegex = /^\+?[1-9][0-9]{7,14}$/;
+
 // Name validation
 const validateName = name => {
   if (!name) {
@@ -71,4 +73,20 @@ const validatePassword = (pass, isConfrimPass, password) => {
   }
 };
 
-export {validateEmail, validatePassword, validateName};
+const validatePhoneNum = phoneNum => {
+  if (!phoneNum) {
+    return {
+      status: false,
+      msg: strings.thisFieldIsMandatory,
+    };
+  } else {
+    return phoneNumRegex.test(phoneNum)
+      ? {status: true, msg: ''}
+      : {
+          status: false,
+          msg: strings.validateNumber,
+        };
+  }
+};
+
+export {validateEmail, validatePassword, validateName, validatePhoneNum};
