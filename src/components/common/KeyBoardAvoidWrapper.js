@@ -1,9 +1,9 @@
 // Library Imports
 import React from 'react';
-import {KeyboardAvoidingView, ScrollView} from 'react-native';
+import {KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 
 // Local Imports
-import {isIOS, moderateScale} from '../../common/constants';
+import {moderateScale} from '../../common/constants';
 import {styles} from '../../themes';
 
 // KeyboardAvoidWrapper Component
@@ -14,9 +14,9 @@ export default KeyBoardAvoidWrapper = ({
 }) => {
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={isIOS ? moderateScale(50) : null}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? moderateScale(50) : null}
       style={[styles.flex, containerStyle]}
-      behavior={isIOS ? 'padding' : null}>
+      behavior={Platform.OS === 'ios' ? 'padding' : null}>
       <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}

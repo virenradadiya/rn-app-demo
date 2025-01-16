@@ -10,11 +10,13 @@ import CText from '../../components/common/CText';
 import CButton from '../../components/common/CButton';
 import {StackNav} from '../../navigation/NavigationKeys';
 import {useNavigation} from '@react-navigation/native';
+import {clearEncryptedStorageData, keys} from '../../utils/helpers';
 
 const Home = () => {
   const navigation = useNavigation();
 
-  const onPressLogout = () => {
+  const onPressLogout = async () => {
+    await clearEncryptedStorageData(keys.LOGIN);
     navigation.navigate(StackNav.SetUpProfile);
   };
   return (

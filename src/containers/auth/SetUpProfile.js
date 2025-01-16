@@ -17,6 +17,7 @@ import {
   validateName,
   validatePhoneNum,
 } from '../../utils/validators';
+import {keys, setEncryptedStorageData} from '../../utils/helpers';
 
 const SetUpProfile = props => {
   const {navigation} = props;
@@ -96,7 +97,8 @@ const SetUpProfile = props => {
     setErrorEmail(msg);
   };
 
-  const onPressContinue = () => {
+  const onPressContinue = async () => {
+    await setEncryptedStorageData(keys.LOGIN, 'true');
     navigation.navigate(StackNav.Home);
   };
 
@@ -169,7 +171,10 @@ const SetUpProfile = props => {
         title={strings.continue}
         onPress={onPressContinue}
         disabled={!!isDisable}
-        containerStyle={localStyles.continueBtnStyle}
+        containerStyle={[
+          localStyles.continueBtnStyle,
+          isDisable && styles.disable,
+        ]}
       />
     </CSafeAreaView>
   );

@@ -11,13 +11,13 @@ import RNExitApp from 'react-native-exit-app';
 const config = {
   androidConfig: {
     packageName: 'com.rndemo',
-    certificateHashes: [''],
+    certificateHashes: ['CERTIFICATE_HASH'],
   },
   iosConfig: {
     appBundleId: 'org.reactjs.native.example.RnDemo',
-    // appTeamId: '  ',
+    appTeamId: 'TEAM_ID',
   },
-  // watcherMail: 'example@gmail.com',
+  watcherMail: 'example@gmail.com',
   isProd: true,
 };
 

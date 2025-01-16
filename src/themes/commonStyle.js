@@ -39,4 +39,7 @@ export default StyleSheet.create({
     width: moderateScale(60),
     ...margin.mt10,
   },
+  disable: {
+    opacity: 0.5,
+  },
 });

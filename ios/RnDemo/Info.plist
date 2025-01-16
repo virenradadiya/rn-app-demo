@@ -40,6 +40,8 @@
 	<array>
 		<string>arm64</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Test requires FaceID access to allows you quick and secure access.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

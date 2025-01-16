@@ -1,38 +1,26 @@
-import {Alert} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
+export const keys = {
+  LOGIN: 'login',
+  BIMATRIC: 'biometric',
+};
+
 const setEncryptedStorageData = async (key, val) => {
-  try {
-    await EncryptedStorage.setItem(key, JSON.stringify(val));
-    return;
-  } catch (e) {
-    Alert.alert('Error', e);
-  }
+  await EncryptedStorage.setItem(key, JSON.stringify(val));
+  return;
 };
 
 const getEncryptedStorageData = async key => {
-  try {
-    const data = await EncryptedStorage.getItem(key);
-    return data;
-  } catch (e) {
-    Alert.alert('Error', e);
-  }
+  const data = await EncryptedStorage.getItem(key);
+  return data;
 };
 
 const clearEncryptedStorageData = async key => {
-  try {
-    await EncryptedStorage.removeItem(key);
-  } catch (e) {
-    Alert.alert('Error', e);
-  }
+  await EncryptedStorage.removeItem(key);
 };
 
 const clearStorage = async () => {
-  try {
-    await EncryptedStorage.clear();
-  } catch (e) {
-    Alert.alert('Error', e);
-  }
+  await EncryptedStorage.clear();
 };
 
 export {
