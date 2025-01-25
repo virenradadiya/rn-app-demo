@@ -18,6 +18,7 @@ export default function StackNavigation() {
         component={StackRoute.SetUpProfile}
       />
       <Stack.Screen name={StackNav.Home} component={StackRoute.Home} />
+      <Stack.Screen name={StackNav.Login} component={StackRoute.Login} />
     </Stack.Navigator>
   );
 }

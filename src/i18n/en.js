@@ -10,4 +10,10 @@ export default {
   plsEnterEmail: 'Please Enter Email',
   validEmail: 'Please Enter Valid Email',
   validName: 'Please Enter Name',
+  password: 'Password',
+  validatePassword: 'Please Enter Password',
+  haveNotAnyAccount: 'Haven’t any account? ',
+  alreadyHaveAnAccount: 'Already have an account? ',
+  logIn: 'Log In',
+  register: 'Register',
 };

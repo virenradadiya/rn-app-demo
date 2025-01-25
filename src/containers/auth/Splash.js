@@ -59,8 +59,14 @@ const Splash = ({navigation}) => {
     }
   };
 
-  const makeAsyncProcessing = () => {
-    navigation.replace(StackNav.SetUpProfile);
+  const makeAsyncProcessing = async () => {
+    const getLoginValue = await getEncryptedStorageData(keys.LOGIN);
+
+    if (!!getLoginValue) {
+      navigation.replace(StackNav.Home);
+    } else {
+      navigation.replace(StackNav.Login);
+    }
   };
 
   useEffect(() => {

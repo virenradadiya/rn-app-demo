@@ -1,6 +1,7 @@
 // Libraries import
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import auth from '@react-native-firebase/auth';
 
 // Local import
 import CSafeAreaView from '../../components/common/CSafeAreaView';
@@ -15,9 +16,11 @@ import CButton from '../../components/common/CButton';
 import {
   validateEmail,
   validateName,
+  validatePassword,
   validatePhoneNum,
 } from '../../utils/validators';
 import {keys, setEncryptedStorageData} from '../../utils/helpers';
+import CText from '../../components/common/CText';
 
 const SetUpProfile = props => {
   const {navigation} = props;
@@ -43,17 +46,22 @@ const SetUpProfile = props => {
   const [errorFullName, setErrorFullName] = useState('');
   const [errorPhoneNo, setErrorPhoneNo] = useState('');
   const [errorNickname, setErrorNickname] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordInputStyle, setPasswordInputStyle] = useState(BlurredStyle);
+  const [errorPassword, setErrorPassword] = useState('');
 
   useEffect(() => {
-    if (!fullName || !nickname || !phoneNo || !email) {
+    if (!fullName || !nickname || !phoneNo || !email || !password) {
       setIsDisable(true);
     } else {
       setIsDisable(false);
     }
-  }, [fullName, nickname, phoneNo, email]);
+  }, [fullName, nickname, phoneNo, email, password]);
 
   const onFocusInput = onHighlight => onHighlight(FocusedStyle);
   const onBlurInput = onUnHighlight => onUnHighlight(BlurredStyle);
+  const onFocusPassword = () => onFocusInput(setPasswordInputStyle);
+  const onBlurPassword = () => onBlurInput(setPasswordInputStyle);
 
   const onFocusEmail = () => {
     onFocusInput(setEmailInputStyle);
@@ -67,6 +75,7 @@ const SetUpProfile = props => {
   const onFocusPhoneNo = () => {
     onFocusInput(setPhoneNoInputStyle);
   };
+  const onPressLogin = () => navigation.navigate(StackNav.Login);
 
   const onBlurFullName = () => onBlurInput(setFullNameInputStyle);
   const onBlurNickName = () => onBlurInput(setNicknameInputStyle);
@@ -78,6 +87,12 @@ const SetUpProfile = props => {
     const {msg} = validateName(text);
     setFullName(text);
     setErrorFullName(msg);
+  };
+
+  const onChangedPassword = text => {
+    const {msg} = validatePassword(text);
+    setPassword(text);
+    setErrorPassword(msg);
   };
 
   const onChangedNickName = text => {
@@ -98,13 +113,18 @@ const SetUpProfile = props => {
   };
 
   const onPressContinue = async () => {
-    await setEncryptedStorageData(keys.LOGIN, 'true');
-    navigation.navigate(StackNav.Home);
+    const userCredential = await auth().createUserWithEmailAndPassword(
+      email,
+      password,
+    );
+    if (userCredential.user.uid) {
+      navigation.navigate(StackNav.Login);
+    }
   };
 
   return (
     <CSafeAreaView>
-      <CHeader title={'Register'} isHideBack={true} />
+      <CHeader title={strings.register} isHideBack={true} />
       <KeyBoardAvoidWrapper containerStyle={[styles.p20]}>
         <CInput
           placeHolder={strings.fullName}
@@ -164,6 +184,20 @@ const SetUpProfile = props => {
           _onBlur={onBlurPhoneNo}
           _errorText={errorPhoneNo}
         />
+        <CInput
+          placeHolder={strings.password}
+          _value={password}
+          autoCapitalize={'none'}
+          toGetTextFieldValue={onChangedPassword}
+          inputContainerStyle={[
+            {backgroundColor: colors.inputBg},
+            localStyles.inputContainerStyle,
+            passwordInputStyle,
+          ]}
+          _onFocus={onFocusPassword}
+          _onBlur={onBlurPassword}
+          _errorText={errorPassword}
+        />
       </KeyBoardAvoidWrapper>
 
       <CButton
@@ -176,6 +210,14 @@ const SetUpProfile = props => {
           isDisable && styles.disable,
         ]}
       />
+      <TouchableOpacity
+        style={localStyles.bottomContainer}
+        onPress={onPressLogin}>
+        <CText type={'r14'} color={colors.placeHolderColor}>
+          {strings.alreadyHaveAnAccount}
+        </CText>
+        <CText type={'s14'}>{strings.logIn}</CText>
+      </TouchableOpacity>
     </CSafeAreaView>
   );
 };
@@ -229,5 +271,9 @@ const localStyles = StyleSheet.create({
   countryPickerButton: {
     ...styles.alignStart,
     ...styles.justifyCenter,
+  },
+  bottomContainer: {
+    ...styles.rowCenter,
+    ...styles.mv15,
   },
 });
